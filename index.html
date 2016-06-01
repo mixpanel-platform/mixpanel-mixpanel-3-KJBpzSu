@@ -23,8 +23,6 @@
       var json_object = [];
         
        $("body").delegate( "#csv_export", "click", function() {
-
-            json.push(last_response);
             var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(json_object);
             window.open(encodeURI(csv));
         });
