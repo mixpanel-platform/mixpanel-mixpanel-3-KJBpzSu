@@ -22,7 +22,9 @@
       var last_response = undefined;
         
        $("body").delegate( "#csv_export", "click", function() {
-            var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(last_response);
+            var json = [];
+            json.push(last_response);
+            var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(json);
             window.open(encodeURI(csv));
         });
           
