@@ -45,9 +45,8 @@
           script = $.trim(script);
           MP.api.custom_query(script, queryParams)
           .done(function(resp) {
-                last_response = resp;
                 var properties = [];
-                _.each(resp, function(v,k) {
+                _.each(resp[0], function(v,k) {
                   var props = {};
                   props[k] = v;
                   properties.push(props);
