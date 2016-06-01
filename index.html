@@ -67,7 +67,7 @@
         function main() {
           return People()
           .map(function(user) {
-            var properties = {};
+            var properties = {"---Total Profiles ---" : 1};
              _.each(user.properties, function(v,k) {
              properties[k] = 1;
             });
