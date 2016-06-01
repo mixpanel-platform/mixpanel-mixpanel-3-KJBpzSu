@@ -20,11 +20,12 @@
       var json_to_csv = new json2csv();
       var survey_id;
       var last_response = undefined;
+      var json_object = [];
         
        $("body").delegate( "#csv_export", "click", function() {
-            var json = [];
+
             json.push(last_response);
-            var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(json);
+            var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(json_object);
             window.open(encodeURI(csv));
         });
           
@@ -38,7 +39,10 @@
           .done(function(resp) {
                 var properties = {};
                 _.each(resp[0], function(v,k) {
+                  var props = {};
+                  props[k] = {count: v};
                   properties[k] = {count: v};
+                  json_object.push(props);
                 });
                 last_response = properties;
                  $('<div></div>').appendTo('body').MPTable({ // create table; try scrolling horizontally over demo below
