@@ -14,23 +14,12 @@
   </head>
   <body class="mixpanel-platform-body">
     <div class="mixpanel-platform-section">
-      <div class="mixpanel-platform-section">
-        <input style="float: left;" class="myInput" placeholder="Enter Survey ID" id="surveySelect"/>
-        <button class="button button_primary" id="run_query">Run Query</button>
-        <div style="clear: both;"></div>
-      </div>
-      <button style="display:none;" class="button button_primary" id="csv_export">Export to CSV</button>
+      <button disabled="true" class="button button_primary" id="csv_export">Please Wait...</button>
     </div>
     <script>
       var json_to_csv = new json2csv();
       var survey_id;
       var last_response = undefined;
-  
-       $('#run_query').on('click', function(e, survey) {
-        $('#csv_export').hide();
-         survey_id = $('#surveySelect').val();
-         runQuery();
-        });
         
        $("body").delegate( "#csv_export", "click", function() {
             var csv = "data:text/csv;charset=utf-8," + json_to_csv.jsonToCSV(last_response);
@@ -45,21 +34,20 @@
           script = $.trim(script);
           MP.api.custom_query(script, queryParams)
           .done(function(resp) {
-                var properties = [];
+                var properties = {};
                 _.each(resp[0], function(v,k) {
-                  var props = {};
-                  props[k] = v;
-                  properties.push(props);
+                  properties[k] = {count: v};
                 });
-                last_response = resp;
+                last_response = properties;
                  $('<div></div>').appendTo('body').MPTable({ // create table; try scrolling horizontally over demo below
                     data: last_response,
                     showPercentages: false,
                     firstColHeader: 'Properties'
                 });
-                $('#csv_export').show();
+                $('#csv_export').html("Export to CSV").prop("disabled",false);
                 
             }).fail(function($xhr) {
+                $('#csv_export').html("Export to CSV").prop("disabled",false);
                 // Somehow the request is not parsed into JSON event with application/json header
                 var error = $xhr.request.responseText;
                 var error_text = "Requst failed";
@@ -82,6 +70,9 @@
             return properties;
           }).reduce(mixpanel.reducer.object_merge())
         }
+    </script>
+    <script>
+      runQuery();
     </script>
   </body>
 </html>
