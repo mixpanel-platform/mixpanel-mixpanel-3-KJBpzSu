@@ -38,7 +38,7 @@
                 var properties = {};
                 _.each(resp[0], function(v,k) {
                   var props = {};
-                  props[k] = {count: v};
+                  props = {property: k, count: v};
                   properties[k] = {count: v};
                   json_object.push(props);
                 });
